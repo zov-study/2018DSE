@@ -3,8 +3,8 @@
     <Box>
     <Group stretchy title="Input Widgets" margined width="200" height="200">
       <Box vertical padded>
-        <Text> {{text}}</Text>
-        <Button @click="ToggleBorder" value="QQQQ"></Button>
+        <Text> {{name}}</Text>
+        <Button @click="exit" >Close</Button>
       </Box>
     </Group>
     </Box>  
@@ -17,7 +17,7 @@
   export default {
     data() {
       return {
-        text: 'Text input',
+        name: 'Text input',
         title: 'Wait Window',
       };
     },
@@ -29,7 +29,7 @@
         this.$root.$el.childNodes[0].childNodes[0].attributes.title="Is it work?";
       },
       show(){
-        console.log(this.$root.$el.attributes);
+        // console.log(this.$root.$el.attributes);
       },
       exit() {
         this.$root.$destroy()

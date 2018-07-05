@@ -23,13 +23,15 @@
   import libui from 'libui-node'
   import Vue from 'vuido'
   import WaitWindow from './WaitWindow'
+  import crud from '../db/crud'
 
   export default {
     data() {
       return {
         text: 'Text input',
         name: 'Vasia',
-        phone:'',
+        phone:'464646464',
+        email:'asd@bsd.com',
         districts: ['Arch Hill',
                   'Auckland CBD',
                   'Avondale',
@@ -87,23 +89,33 @@
                   'Western Springs',
                   'Westfield',
                   'Westmere'],
-        item: 25,
-        email:''
+        item: 25
       };
     },
     computed: {
     },
     methods: {
       Submit(){
-        console.log(this.districts[this.item]);
+        let customer = {
+            name: this.name,
+            phone: this.phone,
+            district:this.districts[this.item],
+            email: this.email,
+            date: Date.now()
+        };
+        crud.newCustomer(customer);
       },
       show(){
         console.log("Main window");
       },
       showModal(){
+        let customer = crud.findByPhone(this.phone);
         let ww = new Vue({
-            render: h=>h(WaitWindow)
+            render: h=>h('<template><Window v-bind:title="title" width="100" height="100" margined v-on:show="show" v-on:close="exit"><Box><Group stretchy title="Input Widgets" margined width="200" height="200"><Box vertical padded><Text> {{name}}</Text><Button @click="exit" >Close</Button></Box></Group></Box></Window></template>',
+            {data:{name:customer[0].name}})
         });      
+        // ww.title = customer.name;
+        console.log(ww.$root._data, customer[0].name);
         ww.$mount();
         console.log("Click");
       },
