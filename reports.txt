@@ -1,0 +1,4 @@
+SDLC
+Testing
+Useability
+Maintainability
