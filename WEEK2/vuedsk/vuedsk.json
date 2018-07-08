@@ -1,0 +1,58 @@
+{
+  "customers": [
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "8e85e@kjhfk"
+    },
+    {
+      "name": "John Bell",
+      "phone": "111111",
+      "district": "Mount Roskill",
+      "email": "asd@bsd.net"
+    },
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com"
+    },
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1530765745753
+    },
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1530765752813
+    },
+    {
+      "name": "Peter",
+      "phone": "4646464645",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1530765765929
+    },
+    {
+      "name": "ipuhdsgp[oih[poi",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1531089849694
+    },
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1531090053519
+    }
+  ],
+  "users": {}
+}
