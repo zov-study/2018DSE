@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "lowdb": "^1.0.0",
+    "vuex": "^3.0.1",
     "vuido": "^0.1.2"
   },
   "devDependencies": {

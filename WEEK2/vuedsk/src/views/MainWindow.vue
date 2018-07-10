@@ -8,11 +8,13 @@
               <TextInput label="Phone:" v-model="phone"/>
               <DropdownList stretchy v-bind:items="districts" v-model="item"/>
               <TextInput label="Email:" v-model="email"/>
+              <TextInput label="Counter:" v-model="counter"/>
               <!-- <Spinbox label="Age:" min="1" max="99"/> -->
               <Button @click="Submit">Submit</Button>
             </Form>
 
         <Button @click="showModal" style="bgcolor:green;">Click me</Button>
+        <Button @click="showTemplate" style="bgcolor:green;">Show Template</Button>
       </Box>
     </Group>
     </Box>  
@@ -22,8 +24,11 @@
 <script>
   import libui from 'libui-node'
   import Vue from 'vuido'
+  import Vuex from 'vuex';
   import WaitWindow from './WaitWindow'
   import crud from '../db/crud'
+  
+  Vue.use(Vuex);
 
   export default {
     data() {
@@ -94,6 +99,9 @@
       };
     },
     computed: {
+          counter: function() {
+            return this.$store.state.counter
+          }
     },
     methods: {
       Submit(){
@@ -110,14 +118,16 @@
         console.log("Main window");
       },
       showModal(){
-        let customer = crud.findByPhone(this.phone);
+        this.$store.commit('setcustomer', crud.findByPhone(this.phone));
         let ww = new Vue({
-            render: h=>h(WaitWindow)
+            render: h=>h(WaitWindow),
+            store: this.$store
         });      
-        // ww.title = customer.name;
-        console.log(ww.$root._data, customer[0].name);
         ww.$mount();
         console.log("Click");
+      },
+      showTemplate(){
+        console.log(this.$store.state.counter);
       },
       exit() {
         libui.stopLoop();
