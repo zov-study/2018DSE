@@ -1,0 +1,113 @@
+{
+  "customers": [
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "8e85e@kjhfk"
+    },
+    {
+      "name": "John Bell",
+      "phone": "111111",
+      "district": "Mount Roskill",
+      "email": "asd@bsd.net"
+    },
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com"
+    },
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1530765745753
+    },
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1530765752813
+    },
+    {
+      "name": "Peter",
+      "phone": "4646464645",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1530765765929
+    },
+    {
+      "name": "ipuhdsgp[oih[poi",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1531089849694
+    },
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1531090053519
+    },
+    {
+      "name": "Vasia",
+      "phone": "464646464",
+      "district": "Mount Eden",
+      "email": "asd@bsd.com",
+      "date": 1531171660054
+    },
+    {
+      "name": "Slava",
+      "phone": "46464646",
+      "district": "Lynfield",
+      "email": "fasdygo@lgoluo.com",
+      "date": 1531171696926
+    },
+    {
+      "name": "Diana",
+      "phone": "5456464",
+      "district": "Saint Heliers",
+      "email": "Diana@asd.com",
+      "date": 1531172512647
+    },
+    {
+      "name": "Slava",
+      "phone": "5646464",
+      "district": "Penrose",
+      "email": "asd@bsd.net",
+      "date": 1531719422180
+    },
+    {
+      "fname": "Oleg",
+      "lname": "Zakharov",
+      "dob": "13 Dec 2018",
+      "phone": "024464666`",
+      "email": "oleg@qqq.asd",
+      "district": "Mount Eden",
+      "date": 1531806917004
+    },
+    {
+      "fname": "Vlada",
+      "lname": "Brusilo",
+      "dob": "15 Oct 1968",
+      "phone": "031316616",
+      "email": "vlada@brusilo.net",
+      "district": "Grey Lynn",
+      "date": 1531807126081
+    },
+    {
+      "fname": "fgxj",
+      "lname": "fgj",
+      "dob": "17 Jul 2018",
+      "phone": "gfj;oi[ihj[iohj",
+      "email": "dfghpoih[oi@",
+      "district": "Arch Hill",
+      "date": 1531807865865
+    }
+  ],
+  "users": {}
+}
