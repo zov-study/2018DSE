@@ -1,5 +1,5 @@
 {
-  "customers": [
+  "contacts": [
     {
       "name": "Vasia",
       "phone": "464646464",
@@ -13,59 +13,11 @@
       "email": "asd@bsd.net"
     },
     {
-      "name": "Vasia",
-      "phone": "464646464",
-      "district": "Mount Eden",
-      "email": "asd@bsd.com"
-    },
-    {
-      "name": "Vasia",
-      "phone": "464646464",
-      "district": "Mount Eden",
-      "email": "asd@bsd.com",
-      "date": 1530765745753
-    },
-    {
-      "name": "Vasia",
-      "phone": "464646464",
-      "district": "Mount Eden",
-      "email": "asd@bsd.com",
-      "date": 1530765752813
-    },
-    {
       "name": "Peter",
       "phone": "4646464645",
       "district": "Mount Eden",
       "email": "asd@bsd.com",
       "date": 1530765765929
-    },
-    {
-      "name": "ipuhdsgp[oih[poi",
-      "phone": "464646464",
-      "district": "Mount Eden",
-      "email": "asd@bsd.com",
-      "date": 1531089849694
-    },
-    {
-      "name": "Vasia",
-      "phone": "464646464",
-      "district": "Mount Eden",
-      "email": "asd@bsd.com",
-      "date": 1531090053519
-    },
-    {
-      "name": "Vasia",
-      "phone": "464646464",
-      "district": "Mount Eden",
-      "email": "asd@bsd.com",
-      "date": 1531171660054
-    },
-    {
-      "name": "Slava",
-      "phone": "46464646",
-      "district": "Lynfield",
-      "email": "fasdygo@lgoluo.com",
-      "date": 1531171696926
     },
     {
       "name": "Diana",
@@ -98,16 +50,84 @@
       "email": "vlada@brusilo.net",
       "district": "Grey Lynn",
       "date": 1531807126081
-    },
-    {
-      "fname": "fgxj",
-      "lname": "fgj",
-      "dob": "17 Jul 2018",
-      "phone": "gfj;oi[ihj[iohj",
-      "email": "dfghpoih[oi@",
-      "district": "Arch Hill",
-      "date": 1531807865865
     }
   ],
-  "users": {}
+  "districts": [
+    "Arch Hill",
+    "Auckland CBD",
+    "Avondale",
+    "Blockhouse Bay",
+    "Balmoral",
+    "Eden Terrace",
+    "Eden Valley",
+    "Ellerslie",
+    "Epsom",
+    "Freemans Bay",
+    "Glendowie",
+    "Glen Innes",
+    "Grafton",
+    "Greenlane",
+    "Greenwoods Corner",
+    "Grey Lynn",
+    "Herne Bay",
+    "Hillsborough",
+    "Kingsland",
+    "Kohimarama",
+    "Lynfield",
+    "Meadowbank",
+    "Mission Bay",
+    "Morningside",
+    "Mount Albert",
+    "Mount Eden",
+    "Mount Roskill",
+    "Mount Wellington",
+    "Newmarket",
+    "Newton",
+    "New Windsor",
+    "Onehunga",
+    "One Tree Hill",
+    "Orakei",
+    "Oranga",
+    "Owairaka",
+    "Panmure",
+    "Parnell",
+    "Penrose",
+    "Point England",
+    "Point Chevalier",
+    "Ponsonby",
+    "Remuera",
+    "Royal Oak",
+    "Saint Heliers",
+    "Saint Johns",
+    "Saint Marys Bay",
+    "Sandringham",
+    "Stonefields",
+    "Tamaki",
+    "Te Papapa",
+    "Three Kings",
+    "Waikowhai",
+    "Waterview",
+    "Western Springs",
+    "Westfield",
+    "Westmere"
+  ],
+  "months": [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ],
+  "stypes": [
+    "by Name",
+    "by Phone",
+    "by Email"
+  ]
 }

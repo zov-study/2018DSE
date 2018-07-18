@@ -8639,7 +8639,6 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
   data() {
     return {
       title: 'Address Book',
-      text: 'Text input',
       fname: '',
       lname: '',
       phone: '',
@@ -8649,29 +8648,25 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
       year: 80,
       search: '',
       message: '',
-      searchtypes: ['by Name', 'by Phone', 'by Email'],
-      titlegr: 'New contact',
-      radio: 0,
+      rtype: 0,
       visible: false,
       isedit: false,
-      isnewuser: false,
+      isnewcontact: false,
       issave: false,
       readonly: true,
-      districts: ['Arch Hill', 'Auckland CBD', 'Avondale', 'Blockhouse Bay', 'Balmoral', 'Eden Terrace', 'Eden Valley', 'Ellerslie', 'Epsom', 'Freemans Bay', 'Glendowie', 'Glen Innes', 'Grafton', 'Greenlane', 'Greenwoods Corner', 'Grey Lynn', 'Herne Bay', 'Hillsborough', 'Kingsland', 'Kohimarama', 'Lynfield', 'Meadowbank', 'Mission Bay', 'Morningside', 'Mount Albert', 'Mount Eden', 'Mount Roskill', 'Mount Wellington', 'Newmarket', 'Newton', 'New Windsor', 'Onehunga', 'One Tree Hill', 'Orakei', 'Oranga', 'Owairaka', 'Panmure', 'Parnell', 'Penrose', 'Point England', 'Point Chevalier', 'Ponsonby', 'Remuera', 'Royal Oak', 'Saint Heliers', 'Saint Johns', 'Saint Marys Bay', 'Sandringham', 'Stonefields', 'Tamaki', 'Te Papapa', 'Three Kings', 'Waikowhai', 'Waterview', 'Western Springs', 'Westfield', 'Westmere'],
-      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      item: 25
+      district: 25
     };
   },
   computed: {
     counter: function () {
       return this.$store.state.counter;
     },
-    searchtitle: function () {
+    stitle: function () {
       let title = '';
       if (this.isnewuser) {
         title = 'New contact';
       } else {
-        title = "Search " + this.searchtypes[this.radio];
+        title = "Search " + this.stypes[this.rtype];
       }
       return title;
     },
@@ -8694,20 +8689,32 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
     },
     dob: function () {
       return this.days[this.day] + ' ' + this.months[this.month] + ' ' + this.years[this.year];
+    },
+    districts: function () {
+      return __WEBPACK_IMPORTED_MODULE_4__database_crud___default.a.getTable('districts');
+    },
+    months: function () {
+      return __WEBPACK_IMPORTED_MODULE_4__database_crud___default.a.getTable('months');
+    },
+    stypes: function () {
+      return __WEBPACK_IMPORTED_MODULE_4__database_crud___default.a.getTable('stypes');
+    },
+    issearch: function () {
+      return this.search.length > 0;
     }
   },
   methods: {
     save() {
-      let customer = {
+      let contact = {
         fname: this.fname,
         lname: this.lname,
         dob: this.dob,
         phone: this.phone,
         email: this.email,
-        district: this.districts[this.item],
+        district: this.districts[this.district],
         date: Date.now()
       };
-      __WEBPACK_IMPORTED_MODULE_4__database_crud___default.a.newCustomer(customer);
+      __WEBPACK_IMPORTED_MODULE_4__database_crud___default.a.newRecord("contacts", contact);
       this.message = 'Contact details saved successfull!';
       this.init();
     },
@@ -8721,14 +8728,23 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
       this.isnewuser = false;
       this.issave = false;
     },
-    newuser() {
+    newcontact() {
       this.name = this.phone = this.email = '';
       this.item = 0, this.readonly = !this.readonly;
       this.isnewuser = !this.isnewuser;
       this.issave = true;
     },
     searchit() {
-      console.log("Search click");
+      switch (this.rtype) {
+        case 2:
+          console.log("Search by eMail");
+          break;
+        case 1:
+          console.log("Search by Phone");
+          break;
+        default:
+          console.log("Search by Name");
+      }
     },
     show() {
       this.init();
@@ -9071,12 +9087,12 @@ var render = function() {
                     _c("RadioButtons", {
                       attrs: {
                         horizontal: "",
-                        items: ["by Name", "by Phone", "by Email"],
-                        selected: _vm.radio
+                        items: _vm.stypes,
+                        selected: _vm.rtype
                       },
                       on: {
                         change: function($event) {
-                          _vm.radio = $event
+                          _vm.rtype = $event
                         }
                       }
                     }),
@@ -9088,23 +9104,28 @@ var render = function() {
                         }
                       }
                     }),
-                    _c("Button", { on: { click: _vm.searchit } }, [
-                      _vm._v("Search")
-                    ])
+                    _c(
+                      "Button",
+                      {
+                        attrs: { enabled: _vm.issearch },
+                        on: { click: _vm.searchit }
+                      },
+                      [_vm._v("Search")]
+                    )
                   ])
                 ]),
                 _c(
                   "Button",
                   {
-                    attrs: { enabled: !_vm.isnewuser },
-                    on: { click: _vm.newuser }
+                    attrs: { enabled: !_vm.isnewcontact },
+                    on: { click: _vm.newcontact }
                   },
                   [_vm._v("New contact")]
                 )
               ])
             ])
           ]),
-          _c("Group", { attrs: { title: _vm.searchtitle, margined: "" } }, [
+          _c("Group", { attrs: { title: _vm.stitle, margined: "" } }, [
             _c("Box", { attrs: { padded: "" } }, [
               _c("Form", { attrs: { label: "Form", padded: "" } }, [
                 _c("TextInput", {
@@ -9208,11 +9229,11 @@ var render = function() {
                     stretchy: "",
                     items: _vm.districts,
                     enabled: !_vm.readonly,
-                    selected: _vm.item
+                    selected: _vm.district
                   },
                   on: {
                     change: function($event) {
-                      _vm.item = $event
+                      _vm.district = $event
                     }
                   }
                 }),
@@ -9370,19 +9391,24 @@ const FileSync = __webpack_require__(22);
 const adapter = new FileSync('vuedsk.json');
 const db = low(adapter);
 
-db.defaults({ customers: [], users: {} }).write();
+db.defaults({ contacts: [], districts: [], months: [] }).write();
 
 exports.findByPhone = phone => {
-    let customer = db.get('customers').filter({ phone: phone }).value();
-    return customer;
+    let contact = db.get('contacts').filter({ phone: phone }).value();
+    return contact;
 };
 
-exports.newCustomer = customer => {
-    console.log(db.get('customers').push(customer).write());
+exports.newRecords = (table, record) => {
+    console.log(db.get(table).push(record).write());
 };
 
 exports.newUser = user => {
     db.get('users').push(user).write();
+};
+
+exports.getTable = table => {
+    let tab = db.get(table).value();
+    return tab;
 };
 
 /***/ }),

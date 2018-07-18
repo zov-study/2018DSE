@@ -1,8 +1,8 @@
-import libui from 'libui-node'
-import Vue from 'vuido'
+import libui from 'libui-node';
+import Vue from 'vuido';
 import Vuex from 'vuex';
-import WaitWindow from '../ui/WaitWindow'
-import crud from '../database/crud'
+import WaitWindow from '../ui/WaitWindow';
+import crud from '../database/crud';
 
 Vue.use(Vuex);
 
@@ -10,7 +10,6 @@ export default {
   data() {
     return {
       title:'Address Book',
-      text: 'Text input',
       fname: '',
       lname: '',
       phone:'',
@@ -20,97 +19,25 @@ export default {
       year:80,
       search: '',
       message:'',
-      searchtypes: ['by Name', 'by Phone', 'by Email'],
-      titlegr:'New contact',
-      radio:0,
+      rtype:0,
       visible: false,
       isedit: false,
-      isnewuser: false,
+      isnewcontact: false,
       issave: false,
       readonly:true,
-      districts: ['Arch Hill',
-                'Auckland CBD',
-                'Avondale',
-                'Blockhouse Bay',
-                'Balmoral',
-                'Eden Terrace',
-                'Eden Valley',
-                'Ellerslie',
-                'Epsom',
-                'Freemans Bay',
-                'Glendowie',
-                'Glen Innes',
-                'Grafton',
-                'Greenlane',
-                'Greenwoods Corner',
-                'Grey Lynn',
-                'Herne Bay',
-                'Hillsborough',
-                'Kingsland',
-                'Kohimarama',
-                'Lynfield',
-                'Meadowbank',
-                'Mission Bay',
-                'Morningside',
-                'Mount Albert',
-                'Mount Eden',
-                'Mount Roskill',
-                'Mount Wellington',
-                'Newmarket',
-                'Newton',
-                'New Windsor',
-                'Onehunga',
-                'One Tree Hill',
-                'Orakei',
-                'Oranga',
-                'Owairaka',
-                'Panmure',
-                'Parnell',
-                'Penrose',
-                'Point England',
-                'Point Chevalier',
-                'Ponsonby',
-                'Remuera',
-                'Royal Oak',
-                'Saint Heliers',
-                'Saint Johns',
-                'Saint Marys Bay',
-                'Sandringham',
-                'Stonefields',
-                'Tamaki',
-                'Te Papapa',
-                'Three Kings',
-                'Waikowhai',
-                'Waterview',
-                'Western Springs',
-                'Westfield',
-                'Westmere'],
-      months:[
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'],
-      item: 25
+      district: 25
     };
   },
   computed: {
         counter: function(){
-          return this.$store.state.counter
+          return this.$store.state.counter;
         },
-        searchtitle:function(){
-          let title=''
+        stitle:function(){
+          let title='';
           if (this.isnewuser) {
             title = 'New contact';
           } else {
-            title = "Search "+this.searchtypes[this.radio];
+            title = "Search "+this.stypes[this.rtype];
           }
           return title;
         },
@@ -133,43 +60,65 @@ export default {
         },
         dob:function(){
           return this.days[this.day]+' '+this.months[this.month]+' '+this.years[this.year];
-        } 
+        }, 
+        districts:function(){
+          return crud.getTable('districts');
+        },
+        months:function(){
+          return crud.getTable('months');
+        },
+        stypes:function(){
+          return crud.getTable('stypes');
+        },
+        issearch:function(){
+          return (this.search.length>0);
+        }
   },
   methods: {
     save(){
-        let customer = {
+        let contact = {
           fname: this.fname,
           lname: this.lname,
           dob: this.dob,
           phone: this.phone,
           email: this.email,
-          district:this.districts[this.item],
+          district:this.districts[this.district],
           date: Date.now()
         };
-        crud.newCustomer(customer);
+        crud.newRecord("contacts",contact);
         this.message='Contact details saved successfull!';
         this.init();
     },
     init(){
-      let cdt = new Date();
-      this.day = cdt.getDate()-1;
-      this.month=cdt.getMonth();
-      this.year=80;
-      this.fname=this.lname=this.phone=this.email='';
-      this.item=0,
-      this.readonly=true;
-      this.isnewuser=false;
-      this.issave=false;
+      let cdt    = new Date();
+      this.day   = cdt.getDate()-1;
+      this.month = cdt.getMonth();
+      this.year  = 80;
+      this.fname = this.lname=this.phone=this.email='';
+      this.item = 0,
+      this.readonly = true;
+      this.isnewuser = false;
+      this.issave = false;
     },
-    newuser(){
-          this.name=this.phone=this.email='';
-          this.item=0,
-          this.readonly=!this.readonly;
-          this.isnewuser=!this.isnewuser;
+    newcontact(){
+          this.name = this.phone=this.email='';
+          this.item = 0,
+          this.readonly = !this.readonly;
+          this.isnewuser = !this.isnewuser;
           this.issave=true;
     },
     searchit(){
-      console.log("Search click");
+      switch (this.rtype){
+        case 2:
+          console.log("Search by eMail");
+          break;
+        case 1:
+          console.log("Search by Phone");
+          break;
+        default:
+          console.log("Search by Name");
+          
+      }
     },
     show(){
       this.init();
@@ -193,4 +142,4 @@ export default {
       libui.stopLoop();
     }
   }
-}
+};

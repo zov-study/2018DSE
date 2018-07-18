@@ -5,21 +5,21 @@ const adapter = new FileSync('vuedsk.json');
 const db = low(adapter);
 
 // Set some defaults if your JSON file is empty
-db.defaults({ customers: [], users: {} })
+db.defaults({ contacts: [], districts: [], months: [] })
   .write();
 
-// Find a customer by Phone
+// Find a contact by Phone
 exports.findByPhone=(phone)=>{
-    let customer = db.get('customers')
+    let contact = db.get('contacts')
     .filter({phone:phone})
     .value();
-    return customer;
+    return contact;
 };
 
-// Add a customer
-exports.newCustomer =(customer)=>{
-    console.log(db.get('customers')
-    .push(customer)
+// Add a contact
+exports.newRecords = (table,record)=>{
+    console.log(db.get(table)
+    .push(record)
     .write());
 };
 
@@ -28,4 +28,11 @@ exports.newUser = (user)=>{
     db.get('users')
     .push(user)
   .write();
+};
+
+// Get data from table
+exports.getTable = (table)=>{
+    let tab = db.get(table)
+    .value();
+    return tab;
 };
