@@ -7,7 +7,7 @@ See https://help.github.com/ignore-files/ for more about ignoring files.
 /coverage
 
 # production
-/build
+#/build
 
 # misc
 .DS_Store
