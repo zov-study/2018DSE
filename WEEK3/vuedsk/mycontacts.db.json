@@ -2,40 +2,46 @@
   "contacts": [
     {
       "name": "Vasia",
+      "dob": "13 Dec 2018",
       "phone": "464646464",
+      "email": "8e85e@kjhfk.asd",
       "district": "Mount Eden",
-      "email": "8e85e@kjhfk"
+      "date": 1530765765129
     },
     {
       "name": "John Bell",
+      "dob": "13 Dec 2018",
       "phone": "111111",
+      "email": "asd@bsd.net",
       "district": "Mount Roskill",
-      "email": "asd@bsd.net"
+      "date": 1530765785929
     },
     {
       "name": "Peter",
+      "dob": "13 Dec 2018",
       "phone": "4646464645",
-      "district": "Mount Eden",
       "email": "asd@bsd.com",
+      "district": "Mount Eden",
       "date": 1530765765929
     },
     {
       "name": "Diana",
+      "dob": "13 Dec 2018",
       "phone": "5456464",
-      "district": "Saint Heliers",
       "email": "Diana@asd.com",
+      "district": "Saint Heliers",
       "date": 1531172512647
     },
     {
       "name": "Slava",
+      "dob": "13 Dec 2018",
       "phone": "5646464",
-      "district": "Penrose",
       "email": "asd@bsd.net",
+      "district": "Penrose",
       "date": 1531719422180
     },
     {
-      "fname": "Oleg",
-      "lname": "Zakharov",
+      "name": "Oleg Zakharov",
       "dob": "13 Dec 2018",
       "phone": "024464666`",
       "email": "oleg@qqq.asd",
@@ -43,8 +49,7 @@
       "date": 1531806917004
     },
     {
-      "fname": "Vlada",
-      "lname": "Brusilo",
+      "name": "Vlada Brusilo",
       "dob": "15 Oct 1968",
       "phone": "031316616",
       "email": "vlada@brusilo.net",
@@ -126,8 +131,8 @@
     "Dec"
   ],
   "stypes": [
-    "by Name",
-    "by Phone",
-    "by Email"
+    "Name",
+    "Phone",
+    "Email"
   ]
 }

@@ -1,26 +1,25 @@
 <template>
-  <Window v-bind:title='title' width="720" height="360" margined v-on:show="show" menu="true" v-on:close="exit">
+  <Window v-bind:title='title' width="640" height="320" margined v-on:show="show" menu="true" v-on:close="exit">
     <Box stretchy padded>
-      <Box horizontal padded>
-        <Group title="Search" margined>
+      <Box padded>
+        <Group v-bind:title="stitle" margined>
           <Box padded>
               <Form label="SearchForm" padded>
                 <Group>
                   <Box horizontal padded>
                     <RadioButtons horizontal v-bind:items="stypes" v-model="rtype"/>
-                    <TextInput label="Search:" v-model="search"/>
-                    <Button @click="searchit" v-bind:enabled="issearch">Search</Button>
+                    <TextInput label="Search:" stretchy v-model="search"/>
+                    <Button @click="searchit" v-bind:enabled="issearch">    Search   </Button>
                   </Box>
                 </Group>
                 <Button @click="newcontact" v-bind:enabled="!isnewcontact">New contact</Button>
               </Form>
           </Box>
-      </Group> 
-      <Group v-bind:title="stitle" margined >
+      </Group>
+      <Group v-bind:title="cmode" margined >
         <Box padded>
           <Form label="Form" padded>
-            <TextInput label="First name:" v-model="fname" v-bind:readonly="readonly"/>
-            <TextInput label="Last name:" v-model="lname" v-bind:readonly="readonly"/>
+            <TextInput label="Name:" v-model="name" v-bind:readonly="readonly"/>
             <Group title="Date of birth" margined >
               <Box horizontal padded>
                 <DropdownList  stretchy v-bind:items="days" v-model="day" v-bind:enabled="!readonly"/>
@@ -33,17 +32,17 @@
             <DropdownList label="Location" stretchy v-bind:items="districts" v-model="district" v-bind:enabled="!readonly"/>
             <Box horizontal padded>
               <Button @click="init" v-bind:enabled="!readonly" v-bind:visible="issave">       Cancel       </Button>
-              <Button @click="edit" v-bind:enabled="!readonly" v-bind:visible="isedit">         Edit      </Button>
+              <Button @click="edit" v-bind:enabled="isedit" v-bind:visible="isedit">         Edit        </Button>
               <Button @click="save" v-bind:enabled="!readonly" v-bind:visible="issave">         Save      </Button>
             </Box>
           </Form>
         </Box>
       </Group>
-    </Box>  
+    </Box>
       <Group stretchy margined >
         <TextInput v-model="message" readonly/>
       </Group>
-    </Box>  
+    </Box>
   </Window>
 </template>
 

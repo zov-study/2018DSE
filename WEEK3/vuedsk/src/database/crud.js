@@ -1,33 +1,26 @@
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
-const adapter = new FileSync('vuedsk.json');
+const adapter = new FileSync('mycontacts.db.json');
 const db = low(adapter);
 
-// Set some defaults if your JSON file is empty
-db.defaults({ contacts: [], districts: [], months: [] })
+// Set default tables if your database file is empty
+db.defaults({ contacts:[], districts:[], months:[], stypes:[]})
   .write();
 
-// Find a contact by Phone
-exports.findByPhone=(phone)=>{
-    let contact = db.get('contacts')
-    .filter({phone:phone})
+  // Find in a Table by Field & Value
+exports.findByVal=(table, field,value)=>{
+    let record = db.get(table)
+    .find((v)=>{return _.lowerCase(v[_.lowerCase(field)])==_.lowerCase(value)})
     .value();
-    return contact;
+    return record;
 };
 
-// Add a contact
-exports.newRecords = (table,record)=>{
+// Add a new Record into Table
+exports.newRecord = (table,record)=>{
     console.log(db.get(table)
     .push(record)
     .write());
-};
-
-// Set a user using Lodash powerful shorthand syntax
-exports.newUser = (user)=>{
-    db.get('users')
-    .push(user)
-  .write();
 };
 
 // Get data from table

@@ -1,7 +1,6 @@
 import libui from 'libui-node';
 import Vue from 'vuido';
 import Vuex from 'vuex';
-import WaitWindow from '../ui/WaitWindow';
 import crud from '../database/crud';
 
 Vue.use(Vuex);
@@ -10,8 +9,7 @@ export default {
   data() {
     return {
       title:'Address Book',
-      fname: '',
-      lname: '',
+      name: '',
       phone:'',
       email:'',
       day:1,
@@ -33,11 +31,14 @@ export default {
           return this.$store.state.counter;
         },
         stitle:function(){
+          return " Search by " + this.stypes[this.rtype] + " ";
+        },
+        cmode:function(){
           let title='';
-          if (this.isnewuser) {
-            title = 'New contact';
+          if (this.isnewcontact) {
+            title = ' New contact ';
           } else {
-            title = "Search "+this.stypes[this.rtype];
+            title = ' Contact details ';
           }
           return title;
         },
@@ -47,7 +48,7 @@ export default {
              for (let i=1;i<=31;i++){
               days.push(i);
             }
-          return days; 
+          return days;
         },
         years:function(){
           let cdt = new Date();
@@ -60,7 +61,7 @@ export default {
         },
         dob:function(){
           return this.days[this.day]+' '+this.months[this.month]+' '+this.years[this.year];
-        }, 
+        },
         districts:function(){
           return crud.getTable('districts');
         },
@@ -77,8 +78,7 @@ export default {
   methods: {
     save(){
         let contact = {
-          fname: this.fname,
-          lname: this.lname,
+          name: this.name,
           dob: this.dob,
           phone: this.phone,
           email: this.email,
@@ -90,53 +90,43 @@ export default {
         this.init();
     },
     init(){
-      let cdt    = new Date();
-      this.day   = cdt.getDate()-1;
-      this.month = cdt.getMonth();
-      this.year  = 80;
-      this.fname = this.lname=this.phone=this.email='';
-      this.item = 0,
-      this.readonly = true;
-      this.isnewuser = false;
-      this.issave = false;
+        let cdt    = new Date();
+        this.day   = cdt.getDate()-1;
+        this.month = cdt.getMonth();
+        this.year  = 80;
+        this.name = this.phone = this.email = this.search = this.message = '';
+        this.district = this.rtype = 0,
+        this.readonly = true;
+        this.isnewcontact = this.isedit = this.issave = false;
     },
     newcontact(){
-          this.name = this.phone=this.email='';
-          this.item = 0,
-          this.readonly = !this.readonly;
-          this.isnewuser = !this.isnewuser;
-          this.issave=true;
+        this.init();
+        this.readonly = false;
+        this.isnewcontact = !this.isnewcontact;
+        this.issave=true;
     },
     searchit(){
-      switch (this.rtype){
-        case 2:
-          console.log("Search by eMail");
-          break;
-        case 1:
-          console.log("Search by Phone");
-          break;
-        default:
-          console.log("Search by Name");
-          
-      }
+      this.readonly = true;
+      this.isnewcontact = this.isedit = this.issave = false;
+      let contact = crud.findByVal('contacts', this.stypes[this.rtype], this.search);
+        if (contact===undefined){
+          this.message='Error: Contact with '+ this.stypes[this.rtype] + ' = "' + this.search + '" is not available!!!';
+        } else {
+          this.message='Success: Contact with '+ this.stypes[this.rtype] + ' = "'+ this.search + '" has been found!!!';
+          this.name=contact.name;
+          this.phone=contact.phone;
+          this.email=contact.email;
+          this.district=this.districts.indexOf(contact.district);
+          this.isedit = true;
+          }
     },
     show(){
       this.init();
     },
     edit(){
-      console.log("Main window");
-    },
-    showModal(){
-      this.$store.commit('setcustomer', crud.findByPhone(this.phone));
-      let ww = new Vue({
-          render: h=>h(WaitWindow),
-          store: this.$store
-      });      
-      ww.$mount();
-      console.log("Click");
-    },
-    showTemplate(){
-      console.log(this.$store.state.counter);
+      this.isedit = !this.isedit;
+      this.readonly = !this.readonly;
+      this.issave = true;
     },
     exit() {
       libui.stopLoop();
