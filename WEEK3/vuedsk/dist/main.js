@@ -73,7 +73,7 @@ module.exports = require("libui-node");
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! Vuido v0.1.2 | Copyright (C) 2018 Michał Męciński | License: MIT */
+/*! Vuido v0.1.3 | Copyright (C) 2018 Michał Męciński | License: MIT */
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -241,13 +241,13 @@ class Widget extends __WEBPACK_IMPORTED_MODULE_0__element__["a" /* Element */] {
   }
 
   insertBefore(childNode, referenceNode) {
-    const index = super.insertBefore(childNode, referenceNode);
+    const prevIndex = childNode.parentNode == this ? this.childNodes.indexOf(childNode) : -1;
+
+    super.insertBefore(childNode, referenceNode);
 
     if (this.widget != null) {
-      if (childNode instanceof __WEBPACK_IMPORTED_MODULE_0__element__["a" /* Element */]) this._insertElement(childNode, index);
+      if (childNode instanceof __WEBPACK_IMPORTED_MODULE_0__element__["a" /* Element */]) this._insertElement(childNode, prevIndex);
     }
-
-    return index;
   }
 
   removeChild(childNode) {
@@ -303,48 +303,56 @@ class Widget extends __WEBPACK_IMPORTED_MODULE_0__element__["a" /* Element */] {
 
   _destroyWidget() {
     this.widget.destroy();
+
+    this._clearWidget();
+  }
+
+  _clearWidget() {
     this.widget = null;
 
-    this.childNodes = [];
+    for (let i = 0; i < this.childNodes.length; i++) {
+      const child = this.childNodes[i];
+      if (child instanceof Widget) child._clearWidget();
+    }
   }
 
   _appendElement(childNode) {
     if (!(childNode instanceof Widget)) throw new Error(this.tagName + ' cannot contain ' + childNode.tagName + ' elements');
 
     childNode._mountWidget();
-    childNode.widgetIndex = this.childNodes.indexOf(childNode);
     this._appendWidget(childNode);
+
+    this._reindexChildWidgets();
   }
 
-  _insertElement(childNode, index) {
+  _insertElement(childNode, prevIndex) {
     if (!(childNode instanceof Widget)) throw new Error(this.tagName + ' cannot contain ' + childNode.tagName + ' elements');
+
+    const index = this.childNodes.indexOf(childNode);
 
     for (let i = this.childNodes.length - 1; i > index; i--) {
       const tailNode = this.childNodes[i];
-      if (tailNode instanceof __WEBPACK_IMPORTED_MODULE_0__element__["a" /* Element */]) this._removeWidget(tailNode);
+      if (tailNode instanceof Widget) this._removeWidget(tailNode);
     }
 
-    let widgetIndex = 0;
-    for (let i = 0; i < index; i++) {
-      if (this.childNodes[i] instanceof Widget) widgetIndex++;
+    if (prevIndex < 0) {
+      childNode._mountWidget();
+      this._appendWidget(childNode);
+    } else if (prevIndex < index) {
+      this._removeWidget(childNode);
+      this._appendWidget(childNode);
     }
-
-    childNode._mountWidget();
-    childNode.widgetIndex = widgetIndex++;
-    this._appendWidget(childNode);
 
     for (let i = index + 1; i < this.childNodes.length; i++) {
       const tailNode = this.childNodes[i];
-      if (tailNode instanceof __WEBPACK_IMPORTED_MODULE_0__element__["a" /* Element */]) {
-        tailNode.widgetIndex = widgetIndex++;
-        this._appendWidget(tailNode);
-      }
+      if (tailNode instanceof Widget) this._appendWidget(tailNode);
     }
+
+    this._reindexChildWidgets();
   }
 
   _removeElement(childNode) {
     this._removeWidget(childNode);
-
     childNode._destroyWidget();
 
     this._reindexChildWidgets();
@@ -2794,20 +2802,34 @@ class Element {
 
     if (referenceNode != null && referenceNode.parentNode != this) throw new Error('Reference node has invalid parent');
 
-    if (childNode.parentNode != null) throw new Error('Child node already has a parent');
+    if (childNode.parentNode != null && childNode.parentNode != this) throw new Error('Child node has invalid parent');
 
     if (childNode instanceof __WEBPACK_IMPORTED_MODULE_0__nodes_textnode__["a" /* TextNode */]) throw new Error('Text node cannot be inserted dynamically');
 
-    const index = this.childNodes.indexOf(referenceNode);
+    if (childNode.parentNode != null) {
+      if (childNode.prevSibling != null) childNode.prevSibling.nextSibling = childNode.nextSibling;
+
+      if (childNode.nextSibling != null) childNode.nextSibling.prevSibling = childNode.prevSibling;
+
+      const prevIndex = this.childNodes.indexOf(childNode);
+      this.childNodes.splice(prevIndex, 1);
+    }
+
+    const index = referenceNode != null ? this.childNodes.indexOf(referenceNode) : this.childNodes.length;
 
     childNode.parentNode = this;
+
     childNode.nextSibling = referenceNode;
-    childNode.prevSibling = this.childNodes[index - 1];
+    if (referenceNode != null) referenceNode.prevSibling = childNode;
 
-    referenceNode.prevSibling = childNode;
+    if (index > 0) {
+      childNode.prevSibling = this.childNodes[index - 1];
+      this.childNodes[index - 1].nextSibling = childNode;
+    } else {
+      childNode.prevSibling = null;
+    }
+
     this.childNodes.splice(index, 0, childNode);
-
-    return index;
   }
 
   removeChild(childNode) {
@@ -2823,8 +2845,10 @@ class Element {
 
     if (childNode.nextSibling != null) childNode.nextSibling.prevSibling = childNode.prevSibling;
 
-    const index = this.childNodes.indexOf(childNode);
+    childNode.prevSibling = null;
+    childNode.nextSibling = null;
 
+    const index = this.childNodes.indexOf(childNode);
     this.childNodes.splice(index, 1);
   }
 
@@ -6798,7 +6822,7 @@ class Combobox extends __WEBPACK_IMPORTED_MODULE_1__widget__["a" /* Widget */] {
       this.widget.append(item);
     });
 
-    if (this.attributes.value != '') this.widget.text = this.attributes.value;
+    if (this.attributes.value != '' && this.attributes.value != null) this.widget.text = this.attributes.value;
 
     this.items = this.attributes.items;
   }
@@ -6811,6 +6835,7 @@ class Combobox extends __WEBPACK_IMPORTED_MODULE_1__widget__["a" /* Widget */] {
         if (item != this.items[index]) throw new Error('Combobox items cannot be changed dynamically');
       });
     } else if (key == 'value') {
+      if (value == null) value = '';
       if (this.widget.text != value) this.widget.text = value;
     } else {
       super._setWidgetAttribute(key, value);
@@ -7423,12 +7448,13 @@ class TextArea extends __WEBPACK_IMPORTED_MODULE_1__widget__["a" /* Widget */] {
   _initializeWidgetAttributes() {
     super._initializeWidgetAttributes();
 
-    if (this.attributes.value != '') this.widget.text = this.attributes.value;
+    if (this.attributes.value != '' && this.attributes.value != null) this.widget.text = this.attributes.value;
     if (this.attributes.readonly) this.widget.readOnly = true;
   }
 
   _setWidgetAttribute(key, value) {
     if (key == 'value') {
+      if (value == null) value = '';
       if (this.widget.text != value) this.widget.text = value;
     } else if (key == 'readonly') {
       this.widget.readOnly = value;
@@ -7480,12 +7506,13 @@ class TextInput extends __WEBPACK_IMPORTED_MODULE_1__widget__["a" /* Widget */] 
   _initializeWidgetAttributes() {
     super._initializeWidgetAttributes();
 
-    if (this.attributes.value != '') this.widget.text = this.attributes.value;
+    if (this.attributes.value != '' && this.attributes.value != null) this.widget.text = this.attributes.value;
     if (this.attributes.readonly) this.widget.readOnly = true;
   }
 
   _setWidgetAttribute(key, value) {
     if (key == 'value') {
+      if (value == null) value = '';
       if (this.widget.text != value) this.widget.text = value;
     } else if (key == 'readonly') {
       this.widget.readOnly = value;
@@ -7626,6 +7653,7 @@ class Window extends __WEBPACK_IMPORTED_MODULE_1__element__["a" /* Element */] {
 
   _setWindowAttribute(key, value) {
     if (key == 'title') {
+      if (value == null) value = '';
       this.window.title = value;
     } else if (key == 'width') {
       if (this.window.contentSize.w != value) this.window.contentSize = new __WEBPACK_IMPORTED_MODULE_0_libui_node___default.a.Size(value, this.window.contentSize.h);
@@ -8631,6 +8659,7 @@ var index_esm = {
 
 
 
+
 __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -8651,6 +8680,7 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
       isedit: false,
       isnewcontact: false,
       issave: false,
+      isrollback: false,
       readonly: true,
       district: 25
     };
@@ -8704,30 +8734,50 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
       return this.search.length > 0;
     },
     isvalid: function () {
-      let valid = this.validIt(this.name) && this.validIt(this.phone, 0) && this.validIt(this.email, 1);
-      console.log(this.name, this.phone, this.email);
-      console.log(this.validIt(this.name), this.validIt(this.phone, 0), this.validIt(this.email, 1));
-      return valid;
+      return this.validIt(this.name) && this.validIt(this.phone, 0) && this.validIt(this.email, 1);
     }
   },
   methods: {
     save() {
       if (this.isvalid) {
-        let fcontact = __WEBPACK_IMPORTED_MODULE_3__database_crud___default.a.findByVal('contacts', 'phone', this.phone);
-        if (fcontact == undefined) {
+        if (this.id == 0) {
+          let fcontact = __WEBPACK_IMPORTED_MODULE_3__database_crud___default.a.findByVal('contacts', 'phone', this.phone);
+          if (fcontact == undefined) {
+            let contact = {
+              name: this.name,
+              dob: this.dob,
+              phone: this.phone,
+              email: this.email,
+              district: this.districts[this.district],
+              id: Date.now()
+            };
+
+            if (__WEBPACK_IMPORTED_MODULE_3__database_crud___default.a.newRecord("contacts", contact) != undefined) {
+              this.init();
+              this.message = 'Info: Contact details saved successfully!';
+            } else {
+              this.message = 'Error: Contact details cannot saved!';
+            }
+          } else {
+            this.message = 'Warning: This contact already exists!';
+            this.isedit = !this.isedit;
+          }
+        } else {
           let contact = {
             name: this.name,
             dob: this.dob,
             phone: this.phone,
             email: this.email,
             district: this.districts[this.district],
-            date: Date.now()
+            id: this.id
           };
-          __WEBPACK_IMPORTED_MODULE_3__database_crud___default.a.newRecord("contacts", contact);
-          this.message = 'Contact details saved successfull!';
-          this.init();
-        } else {
-          this.message = 'Warning: This contact already exists!';
+          if (__WEBPACK_IMPORTED_MODULE_3__database_crud___default.a.updateRecord('contacts', this.id, contact) != undefined) {
+            this.init();
+            this.message = 'Info: Contact details updated successfully!';
+          } else {
+            this.message = 'Error: Contact details cannot be updated!';
+            this.isedit = !this.isedit;
+          }
         }
       } else {
         this.message = 'Error: Please, fill up all contact details!';
@@ -8740,7 +8790,7 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
       this.year = 80;
       this.name = this.phone = this.email = this.search = this.message = '';
       this.district = this.rtype = this.id = 0, this.readonly = true;
-      this.isnewcontact = this.isedit = this.issave = false;
+      this.isnewcontact = this.isedit = this.issave = this.isrollback = false;
     },
     newcontact() {
       this.init();
@@ -8761,28 +8811,32 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
         this.phone = contact.phone;
         this.email = contact.email;
         this.district = this.districts.indexOf(contact.district);
-        this.id = contact.date;
+        let dmy = contact.dob.split(' ');
+        this.day = this.days.indexOf(parseInt(dmy[0]));
+        this.month = this.months.indexOf(dmy[1]);
+        this.year = this.years.indexOf(parseInt(dmy[2]));
+        this.id = contact.id;
         this.isedit = true;
-        console.log(this.id);
       }
     },
     validIt: function (field, type) {
       if (field === undefined || field === '' || field.length == 0) {
         return false;
       }
-      let re = '';
+      let regexp = '';
       switch (type) {
         case 0:
-          re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{3,6}$/im;
+          regexp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{3,6}$/im;
           break;
 
         case 1:
-          re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          regexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           break;
+
         default:
-          re = /^[a-zA-Z0-9-\s\.]*$/;
+          regexp = /^[a-zA-Z0-9-\s\.]*$/;
       }
-      return re.test(field);
+      return regexp.test(field);
     },
     show() {
       this.init();
@@ -8791,6 +8845,32 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
       this.isedit = !this.isedit;
       this.readonly = !this.readonly;
       this.issave = true;
+    },
+    remove() {
+      this.isedit = !this.isedit;
+      this.isrollback = !this.isrollback;
+      if (__WEBPACK_IMPORTED_MODULE_3__database_crud___default.a.removeRecord('contacts', this.id) != undefined) {
+        this.message = 'Info: Contact with name ' + this.name + ' removed successfully!';
+      } else {
+        this.message = 'Error: Contact with name ' + this.name + ' already removed!';
+      }
+    },
+    rollback() {
+      let contact = {
+        name: this.name,
+        dob: this.dob,
+        phone: this.phone,
+        email: this.email,
+        district: this.districts[this.district],
+        id: this.id
+      };
+      if (__WEBPACK_IMPORTED_MODULE_3__database_crud___default.a.newRecord("contacts", contact) != undefined) {
+        this.message = 'Contact restored successfully!';
+      } else {
+        this.message = 'Error: Cannot restore this contact!';
+      }
+      this.isedit = !this.isedit;
+      this.isrollback = !this.isrollback;
     },
     exit() {
       __WEBPACK_IMPORTED_MODULE_0_libui_node___default.a.stopLoop();
@@ -8908,7 +8988,7 @@ var component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_
   false,
   null,
   null,
-  "783a0c2d"
+  "8a671f86"
   
 )
 
@@ -9105,7 +9185,10 @@ var render = function() {
                   _c(
                     "Button",
                     {
-                      attrs: { enabled: !_vm.readonly, visible: _vm.issave },
+                      attrs: {
+                        enabled: !_vm.readonly || _vm.isedit,
+                        visible: _vm.issave || _vm.isedit
+                      },
                       on: { click: _vm.init }
                     },
                     [_vm._v("       Cancel       ")]
@@ -9116,7 +9199,26 @@ var render = function() {
                       attrs: { enabled: _vm.isedit, visible: _vm.isedit },
                       on: { click: _vm.edit }
                     },
-                    [_vm._v("         Edit        ")]
+                    [_vm._v("        Edit        ")]
+                  ),
+                  _c(
+                    "Button",
+                    {
+                      attrs: { enabled: _vm.isedit, visible: _vm.isedit },
+                      on: { click: _vm.remove }
+                    },
+                    [_vm._v("       Remove       ")]
+                  ),
+                  _c(
+                    "Button",
+                    {
+                      attrs: {
+                        enabled: _vm.isrollback,
+                        visible: _vm.isrollback
+                      },
+                      on: { click: _vm.rollback }
+                    },
+                    [_vm._v("       Restore      ")]
                   ),
                   _c(
                     "Button",
@@ -9124,7 +9226,7 @@ var render = function() {
                       attrs: { enabled: _vm.isvalid, visible: _vm.issave },
                       on: { click: _vm.save }
                     },
-                    [_vm._v("         Save        ")]
+                    [_vm._v("        Save        ")]
                   )
                 ])
               ])
@@ -9163,19 +9265,25 @@ const db = low(adapter);
 db.defaults({ contacts: [], districts: [], months: [], stypes: [] }).write();
 
 exports.findByVal = (table, field, value) => {
-    let record = db.get(table).find(v => {
+    return db.get(table).find(v => {
         return _.lowerCase(v[_.lowerCase(field)]) == _.lowerCase(value);
     }).value();
-    return record;
 };
 
 exports.newRecord = (table, record) => {
-    console.log(db.get(table).push(record).write());
+    return db.get(table).push(record).write();
+};
+
+exports.updateRecord = (table, id, record) => {
+    return db.get(table).find({ id: id }).assign(record).write();
+};
+
+exports.removeRecord = (table, id) => {
+    return db.get(table).remove({ id: id }).write();
 };
 
 exports.getTable = table => {
-    let tab = db.get(table).value();
-    return tab;
+    return db.get(table).value();
 };
 
 /***/ }),

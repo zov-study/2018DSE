@@ -10,22 +10,36 @@ db.defaults({ contacts:[], districts:[], months:[], stypes:[]})
 
   // Find in a Table by Field & Value
 exports.findByVal=(table, field,value)=>{
-    let record = db.get(table)
-    .find((v)=>{return _.lowerCase(v[_.lowerCase(field)])==_.lowerCase(value)})
+    return db.get(table)
+    .find((v)=>{return _.lowerCase(v[_.lowerCase(field)])==_.lowerCase(value);})
     .value();
-    return record;
 };
 
 // Add a new Record into Table
 exports.newRecord = (table,record)=>{
-    console.log(db.get(table)
+    return db.get(table)
     .push(record)
-    .write());
+    .write();
+};
+
+// Add a update Record into Table
+exports.updateRecord = (table,id,record)=>{
+    return db.get(table)
+    .find({ id: id })
+    .assign(record)
+    .write();
+};
+
+// Add a remove Record into Table
+exports.removeRecord = (table,id)=>{
+    return db.get(table)
+    .remove({ id: id })
+    .write();
 };
 
 // Get data from table
 exports.getTable = (table)=>{
-    let tab = db.get(table)
+    return db.get(table)
     .value();
-    return tab;
 };
+

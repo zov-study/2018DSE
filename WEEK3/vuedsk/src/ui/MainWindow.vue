@@ -31,9 +31,11 @@
             <TextInput label="Email:" v-model="email" v-bind:readonly="readonly"/>
             <DropdownList label="Location" stretchy v-bind:items="districts" v-model="district" v-bind:enabled="!readonly"/>
             <Box horizontal padded>
-              <Button @click="init" v-bind:enabled="!readonly" v-bind:visible="issave">       Cancel       </Button>
-              <Button @click="edit" v-bind:enabled="isedit" v-bind:visible="isedit">         Edit        </Button>
-              <Button @click="save" v-bind:enabled="isvalid" v-bind:visible="issave">         Save        </Button>
+              <Button @click="init"     v-bind:enabled="!readonly || isedit"   v-bind:visible="issave || isedit"    >       Cancel       </Button>
+              <Button @click="edit"     v-bind:enabled="isedit"      v-bind:visible="isedit"    >        Edit        </Button>
+              <Button @click="remove"   v-bind:enabled="isedit"      v-bind:visible="isedit"    >       Remove       </Button>
+              <Button @click="rollback" v-bind:enabled="isrollback"  v-bind:visible="isrollback">       Restore      </Button>
+              <Button @click="save"     v-bind:enabled="isvalid"     v-bind:visible="issave"    >        Save        </Button>
             </Box>
           </Form>
         </Box>

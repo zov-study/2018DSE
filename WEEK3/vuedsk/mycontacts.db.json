@@ -6,15 +6,7 @@
       "phone": "464646464",
       "email": "8e85e@kjhfk.asd",
       "district": "Mount Eden",
-      "date": 1530765765129
-    },
-    {
-      "name": "John Bell",
-      "dob": "13 Dec 2018",
-      "phone": "111111",
-      "email": "asd@bsd.net",
-      "district": "Mount Roskill",
-      "date": 1530765785929
+      "id": 1530765765129
     },
     {
       "name": "Peter",
@@ -22,15 +14,7 @@
       "phone": "4646464645",
       "email": "asd@bsd.com",
       "district": "Mount Eden",
-      "date": 1530765765929
-    },
-    {
-      "name": "Diana",
-      "dob": "13 Dec 2018",
-      "phone": "5456464",
-      "email": "Diana@asd.com",
-      "district": "Saint Heliers",
-      "date": 1531172512647
+      "id": 1530765765929
     },
     {
       "name": "Slava",
@@ -38,15 +22,7 @@
       "phone": "5646464",
       "email": "asd@bsd.net",
       "district": "Penrose",
-      "date": 1531719422180
-    },
-    {
-      "name": "Oleg Zakharov",
-      "dob": "13 Dec 2018",
-      "phone": "024464666`",
-      "email": "oleg@qqq.asd",
-      "district": "Mount Eden",
-      "date": 1531806917004
+      "id": 1531719422180
     },
     {
       "name": "Vlada Brusilo",
@@ -54,7 +30,7 @@
       "phone": "031316616",
       "email": "vlada@brusilo.net",
       "district": "Grey Lynn",
-      "date": 1531807126081
+      "id": 1531807126081
     },
     {
       "name": "ewfew",
@@ -62,7 +38,23 @@
       "phone": "6464646464",
       "email": "asd@fdsfdsfs.com",
       "district": "Arch Hill",
-      "date": 1532339181085
+      "id": 1532339181085
+    },
+    {
+      "name": "Oleg Zakharov",
+      "dob": "7 Apr 1989",
+      "phone": "024464666",
+      "email": "oleg@qqq.net",
+      "district": "Mount Eden",
+      "id": 1532385224431
+    },
+    {
+      "name": "Diana",
+      "dob": "8 Apr 1953",
+      "phone": "5456464123",
+      "email": "Diana@asd.com",
+      "district": "Saint Heliers",
+      "id": 1531172512647
     }
   ],
   "districts": [
