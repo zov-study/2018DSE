@@ -1,18 +1,17 @@
 <template>
-  <Window width="1000" height="480" margined v-on:show="show" menu="true" v-on:close="exit">
+  <Window title="First window" width="640" height="320" margined v-on:show="show" menu="true" v-on:close="exit">
     <Box>
-    <Group stretchy title="Input Widgets" margined width="200" height="200">
+    <Group stretchy title=" First form " margined width="200" height="200">
       <Box vertical padded>
             <Form label="Form" padded>
-              <TextInput label="First name:" v-model="name"/>
+              <TextInput label="Name:" v-model="name"/>
               <TextInput label="Phone:" v-model="phone"/>
               <DropdownList stretchy v-bind:items="districts" v-model="item"/>
               <TextInput label="Email:" v-model="email"/>
-              <!-- <Spinbox label="Age:" min="1" max="99"/> -->
-              <Button @click="Submit">Submit</Button>
+              <Button @click="Submit">Save</Button>
             </Form>
 
-        <Button @click="showModal" style="bgcolor:green;">Click me</Button>
+        <!-- <Button @click="showModal" style="bgcolor:green;">Click me</Button> -->
       </Box>
     </Group>
     </Box>  
@@ -29,9 +28,9 @@
     data() {
       return {
         text: 'Text input',
-        name: 'Vasia',
-        phone:'464646464',
-        email:'asd@bsd.com',
+        name: 'Donald Trump',
+        phone:'+1 123 456 6789',
+        email:'trump@whitehouse.usa',
         districts: ['Arch Hill',
                   'Auckland CBD',
                   'Avondale',
@@ -108,17 +107,17 @@
       show(){
         console.log("Main window");
       },
-      showModal(){
-        let customer = crud.findByPhone(this.phone);
-        let ww = new Vue({
-            render: h=>h('<template><Window v-bind:title="title" width="100" height="100" margined v-on:show="show" v-on:close="exit"><Box><Group stretchy title="Input Widgets" margined width="200" height="200"><Box vertical padded><Text> {{name}}</Text><Button @click="exit" >Close</Button></Box></Group></Box></Window></template>',
-            {data:{name:customer[0].name}})
-        });      
-        // ww.title = customer.name;
-        console.log(ww.$root._data, customer[0].name);
-        ww.$mount();
-        console.log("Click");
-      },
+      // showModal(){
+      //   let customer = crud.findByPhone(this.phone);
+      //   let ww = new Vue({
+      //       render: h=>h('<template><Window v-bind:title="title" width="100" height="100" margined v-on:show="show" v-on:close="exit"><Box><Group stretchy title="Input Widgets" margined width="200" height="200"><Box vertical padded><Text> {{name}}</Text><Button @click="exit" >Close</Button></Box></Group></Box></Window></template>',
+      //       {data:{name:customer[0].name}})
+      //   });      
+      //   // ww.title = customer.name;
+      //   console.log(ww.$root._data, customer[0].name);
+      //   ww.$mount();
+      //   console.log("Click");
+      // },
       exit() {
         libui.stopLoop();
       }

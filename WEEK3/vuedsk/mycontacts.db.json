@@ -1,28 +1,12 @@
 {
   "contacts": [
     {
-      "name": "Vasia",
-      "dob": "13 Dec 2018",
-      "phone": "464646464",
-      "email": "8e85e@kjhfk.asd",
-      "district": "Mount Eden",
-      "id": 1530765765129
-    },
-    {
       "name": "Peter",
       "dob": "13 Dec 2018",
       "phone": "4646464645",
       "email": "asd@bsd.com",
       "district": "Mount Eden",
       "id": 1530765765929
-    },
-    {
-      "name": "Slava",
-      "dob": "13 Dec 2018",
-      "phone": "5646464",
-      "email": "asd@bsd.net",
-      "district": "Penrose",
-      "id": 1531719422180
     },
     {
       "name": "Vlada Brusilo",
@@ -55,6 +39,22 @@
       "email": "Diana@asd.com",
       "district": "Saint Heliers",
       "id": 1531172512647
+    },
+    {
+      "name": "Donald Trump",
+      "dob": "14 Jun 1946",
+      "phone": "11234566789",
+      "email": "trump@whitehouse.usa",
+      "district": "Newton",
+      "id": 1530765765129
+    },
+    {
+      "name": "Roman",
+      "dob": "7 Apr 1989",
+      "phone": "02123456789",
+      "email": "roman@gmail.com",
+      "district": "Penrose",
+      "id": 1531719422180
     }
   ],
   "districts": [

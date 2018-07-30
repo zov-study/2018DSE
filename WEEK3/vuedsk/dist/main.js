@@ -8819,7 +8819,7 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
         this.isedit = true;
       }
     },
-    validIt: function (field, type) {
+    validIt(field, type) {
       if (field === undefined || field === '' || field.length == 0) {
         return false;
       }

@@ -182,7 +182,7 @@ export default {
           this.isedit = true;
           }
     },
-    validIt: function (field,type) {
+    validIt(field,type) {
       // Form validation with specific fields
       if (field===undefined || field==='' || field.length==0){
         return false;
