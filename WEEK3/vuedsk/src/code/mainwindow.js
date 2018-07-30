@@ -31,15 +31,15 @@ export default {
     };
   },
   computed: {
-        counter: function(){
+        counter(){
         // Transfer counter value through Vuex Store.
           return this.$store.state.counter;
         },
-        stitle:function(){
+        stitle(){
         // Change search's fields group title of the selected types.
         return " Search by " + this.stypes[this.rtype] + " ";
         },
-        cmode:function(){
+        cmode(){
         // Change contact's fields group title of the specific mode.
           let title='';
           if (this.isnewcontact) {
@@ -49,7 +49,7 @@ export default {
           }
           return title;
         },
-        days:function(){
+        days(){
         // Fill up a day's array with a range of month's days
         let dd=[31,29,31,30,31,30,31,31,30,31,30,31];
             let days=[];
@@ -58,7 +58,7 @@ export default {
             }
           return days;
         },
-        years:function(){
+        years(){
         // Fill up a year's array with a range of years
           let cdt = new Date();
           let years =[];
@@ -68,27 +68,27 @@ export default {
           }
           return years;
         },
-        dob:function(){
+        dob(){
         // Compute the day of birth from the three fields.
           return this.days[this.day]+' '+this.months[this.month]+' '+this.years[this.year];
         },
-        districts:function(){
+        districts(){
         // Select Auckland's districts from database.
         return crud.getTable('districts');
         },
-        months:function(){
+        months(){
         // Select names of months from database.
         return crud.getTable('months');
         },
-        stypes:function(){
+        stypes(){
         // Select Search types from database.
         return crud.getTable('stypes');
         },
-        issearch:function(){
+        issearch(){
         // Enable or disable Search mode.
           return (this.search.length>0);
         },
-        isvalid: function () {
+        isvalid() {
         // Enable or disable Save mode.
           return this.validIt(this.name) && this.validIt(this.phone,0) && this.validIt(this.email,1);
         }

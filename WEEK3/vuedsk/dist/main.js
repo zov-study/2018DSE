@@ -8686,13 +8686,13 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
     };
   },
   computed: {
-    counter: function () {
+    counter() {
       return this.$store.state.counter;
     },
-    stitle: function () {
+    stitle() {
       return " Search by " + this.stypes[this.rtype] + " ";
     },
-    cmode: function () {
+    cmode() {
       let title = '';
       if (this.isnewcontact) {
         title = ' New contact ';
@@ -8701,7 +8701,7 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
       }
       return title;
     },
-    days: function () {
+    days() {
       let dd = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
       let days = [];
       for (let i = 1; i <= 31; i++) {
@@ -8709,7 +8709,7 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
       }
       return days;
     },
-    years: function () {
+    years() {
       let cdt = new Date();
       let years = [];
       let year = cdt.getFullYear();
@@ -8718,22 +8718,22 @@ __WEBPACK_IMPORTED_MODULE_1_vuido___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vu
       }
       return years;
     },
-    dob: function () {
+    dob() {
       return this.days[this.day] + ' ' + this.months[this.month] + ' ' + this.years[this.year];
     },
-    districts: function () {
+    districts() {
       return __WEBPACK_IMPORTED_MODULE_3__database_crud___default.a.getTable('districts');
     },
-    months: function () {
+    months() {
       return __WEBPACK_IMPORTED_MODULE_3__database_crud___default.a.getTable('months');
     },
-    stypes: function () {
+    stypes() {
       return __WEBPACK_IMPORTED_MODULE_3__database_crud___default.a.getTable('stypes');
     },
-    issearch: function () {
+    issearch() {
       return this.search.length > 0;
     },
-    isvalid: function () {
+    isvalid() {
       return this.validIt(this.name) && this.validIt(this.phone, 0) && this.validIt(this.email, 1);
     }
   },
